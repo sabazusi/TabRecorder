@@ -1,0 +1,4 @@
+node_modules/
+scenarios/
+native/tab-recorder-helper/.build/
+*.log

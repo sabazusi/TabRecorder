@@ -1,0 +1,23 @@
+{
+  "name": "tab-recorder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "tab-recorder": "./src/index.ts"
+  },
+  "scripts": {
+    "build:native": "swift build --package-path native/tab-recorder-helper -c release",
+    "record": "node --experimental-strip-types src/index.ts record",
+    "play": "node --experimental-strip-types src/index.ts play",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
