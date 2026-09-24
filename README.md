@@ -58,9 +58,12 @@ tab-recorder play scenarios/example.json
 
 ```bash
 tab-recorder play scenarios/example.json --loop
+tab-recorder play scenarios/example.json --loop --loop-interval 3000
 tab-recorder play scenarios/example.json --count 10
 tab-recorder play scenarios/example.json --speed 2
 ```
+
+`--loop-interval 3000` は各ループの間に3秒待機します。待機中も `Ctrl+C` ですぐに停止できます。単位はミリ秒で、デフォルトは `0` です。
 
 `--speed 2` は待機時間を半分にします。
 

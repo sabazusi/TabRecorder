@@ -4,6 +4,7 @@ import { executeStep, sleepScaled } from "./executeStep.ts";
 
 export type PlayOptions = {
   loop: boolean;
+  loopInterval: number;
   count?: number;
   speed: number;
   signal: AbortSignal;
@@ -31,8 +32,14 @@ export async function playScenario(
 
       await playOnce(scenario, window, mouse, options);
 
-      if (!options.loop && loopIndex >= (options.count ?? 1)) {
+      const hasNextLoop = options.loop || loopIndex < (options.count ?? 1);
+      if (options.signal.aborted || !hasNextLoop) {
         break;
+      }
+
+      if (options.loopInterval > 0) {
+        console.log(`Waiting ${options.loopInterval}ms before the next loop...`);
+        await sleepScaled(options.loopInterval, 1, options.signal);
       }
     }
   } finally {

@@ -5,7 +5,7 @@ import { loadScenario } from "../scenario/loadScenario.ts";
 export async function runPlay(args: string[]): Promise<void> {
   const file = args[0];
   if (!file) {
-    throw new Error("Usage: tab-recorder play <scenario.json> [--loop] [--count n] [--speed n]");
+    throw new Error("Usage: tab-recorder play <scenario.json> [--loop] [--loop-interval ms] [--count n] [--speed n]");
   }
 
   const options = parsePlayOptions(args.slice(1));
@@ -22,8 +22,9 @@ export async function runPlay(args: string[]): Promise<void> {
   });
 }
 
-function parsePlayOptions(args: string[]): { loop: boolean; count?: number; speed: number } {
+export function parsePlayOptions(args: string[]): { loop: boolean; loopInterval: number; count?: number; speed: number } {
   let loop = false;
+  let loopInterval = 0;
   let count: number | undefined;
   let speed = 1;
 
@@ -32,6 +33,9 @@ function parsePlayOptions(args: string[]): { loop: boolean; count?: number; spee
     switch (arg) {
       case "--loop":
         loop = true;
+        break;
+      case "--loop-interval":
+        loopInterval = parseNonNegativeInteger(args[++index], "--loop-interval");
         break;
       case "--count":
         count = parsePositiveInteger(args[++index], "--count");
@@ -48,7 +52,15 @@ function parsePlayOptions(args: string[]): { loop: boolean; count?: number; spee
     throw new Error("Use either --loop or --count, not both.");
   }
 
-  return { loop, count, speed };
+  return { loop, loopInterval, count, speed };
+}
+
+function parseNonNegativeInteger(value: string | undefined, option: string): number {
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 0) {
+    throw new Error(`${option} must be an integer greater than or equal to 0.`);
+  }
+  return parsed;
 }
 
 function parsePositiveInteger(value: string | undefined, option: string): number {

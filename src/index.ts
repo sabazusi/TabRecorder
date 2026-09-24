@@ -15,7 +15,7 @@ async function main(): Promise<void> {
     default:
       console.log("Usage:");
       console.log("  tab-recorder record <name>");
-      console.log("  tab-recorder play <scenario.json> [--loop] [--count n] [--speed n]");
+      console.log("  tab-recorder play <scenario.json> [--loop] [--loop-interval ms] [--count n] [--speed n]");
   }
 }
 
